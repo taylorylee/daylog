@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Every Day Is Something</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geist:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:    #1a1a18;
+      --paper:  #f0ead8;
+      --moss:   #3b5c3a;
+      --rust:   #c45c2a;
+      --muted:  #7a7060;
+      --rule:   #c8bfa8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Geist', sans-serif;
+    }
+
+    /* ── grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.5;
+    }
+
+    /* ── layout ── */
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 80px 32px 120px;
+    }
+
+    /* ── header ── */
+    .stamp {
+      display: inline-block;
+      border: 2.5px solid var(--rust);
+      color: var(--rust);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      padding: 4px 10px;
+      margin-bottom: 32px;
+      transform: rotate(-1deg);
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 10vw, 88px);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--moss);
+    }
+
+    .rule {
+      height: 1.5px;
+      background: var(--rule);
+      margin: 36px 0;
+    }
+
+    /* ── today block ── */
+    .today-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .today-event {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .today-source {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ── body copy ── */
+    .desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 520px;
+      margin-top: 24px;
+    }
+
+    .desc strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    /* ── subscribe buttons ── */
+    .subscribe {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sub-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border: 1.5px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Geist', sans-serif;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      max-width: 360px;
+    }
+
+    .btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .btn.moss {
+      border-color: var(--moss);
+      color: var(--moss);
+    }
+    .btn.moss:hover {
+      background: var(--moss);
+      color: var(--paper);
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ── copy URL row ── */
+    .copy-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .copy-url {
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+      word-break: break-all;
+      flex: 1;
+    }
+
+    .copy-btn {
+      font-family: 'Geist', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      background: none;
+      border: 1px solid var(--rule);
+      color: var(--muted);
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .copy-btn.copied { color: var(--moss); border-color: var(--moss); }
+
+    /* ── sources ── */
+    .sources {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .sources-title {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .source-item {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 2;
+    }
+
+    .source-item a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: var(--rule);
+      text-underline-offset: 3px;
+    }
+
+    .source-item a:hover { text-decoration-color: var(--ink); }
+
+    /* ── footer ── */
+    footer {
+      margin-top: 64px;
+      font-size: 11px;
+      color: var(--rule);
+      font-style: italic;
+    }
+
+    @media (max-width: 480px) {
+      .page { padding: 48px 24px 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="stamp">Free · Updated Daily</div>
+
+    <h1>Every Day<br>Is <em>Something</em></h1>
+
+    <div class="rule"></div>
+
+    <div class="today-label">Today</div>
+    <div class="today-event" id="today-event">Loading...</div>
+    <div class="today-source" id="today-source"></div>
+
+    <p class="desc">
+      One curated observance for every day of the year — from
+      <strong>World Ocean Day</strong> to <strong>National Hot Dog Day</strong>.
+      Subscribe once and it lives quietly in your calendar, auto-updating daily.
+      No app. No account. Just a calendar feed.
+    </p>
+
+    <div class="subscribe">
+      <div class="sub-label">Subscribe</div>
+
+      <a class="btn" id="gcal-btn" href="#" target="_blank" rel="noopener">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+        Add to Google Calendar
+      </a>
+
+      <a class="btn moss" id="apple-btn" href="#" target="_blank" rel="noopener">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+        Add to Apple Calendar
+      </a>
+
+      <div class="copy-row">
+        <span class="copy-url" id="display-url">—</span>
+        <button class="copy-btn" id="copy-btn" onclick="copyURL()">Copy URL</button>
+      </div>
+    </div>
+
+    <div class="sources">
+      <div class="sources-title">Sources</div>
+      <div class="source-item">
+        <a href="https://natdaycal.wordpress.com" target="_blank" rel="noopener">NatDayCal</a>
+        — one curated fun/quirky national day per day
+      </div>
+      <div class="source-item">
+        <a href="https://github.com/civilianEU/un-international-days" target="_blank" rel="noopener">UN International Days</a>
+        — 145 official UN observances
+      </div>
+    </div>
+
+    <footer>Updated daily</footer>
+
+  </div>
+
+  <script>
+    // ── Build subscribe URLs from current page location ───────────────────────
+    (function () {
+      const base = window.location.origin + window.location.pathname.replace(/\/?$/, '/');
+      const icsPath = base + 'calendar.ics';
+      const webcal  = icsPath.replace(/^https?/, 'webcal');
+
+      document.getElementById('display-url').textContent = webcal;
+
+      // Google Calendar "Add by URL" deep link
+      document.getElementById('gcal-btn').href =
+        'https://calendar.google.com/calendar/r/settings/addbyurl?url=' + encodeURIComponent(icsPath);
+
+      // Apple Calendar / webcal:// link (prompts native calendar app on macOS/iOS)
+      document.getElementById('apple-btn').href = webcal;
+    })();
+
+    function copyURL() {
+      const url = document.getElementById('display-url').textContent;
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy URL';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // ── Load today's event from calendar.ics ──────────────────────────────────
+    async function loadTodayEvent() {
+      try {
+        const res = await fetch('./calendar.ics');
+        if (!res.ok) throw new Error('not found');
+        const text = await res.text();
+
+        // Get today as YYYYMMDD
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const today = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+
+        // Parse events
+        const blocks = text.split('BEGIN:VEVENT').slice(1);
+        for (const block of blocks) {
+          const dtMatch  = block.match(/DTSTART(?:;[^:]*)?:(\d{8})/);
+          const sumMatch = block.match(/SUMMARY:(.+)/);
+          const srcMatch = block.match(/X-WR-CALNAME:(.+)|DESCRIPTION:.*?([A-Za-z ]+Day[^\\n]*)/);
+
+          if (dtMatch && dtMatch[1] === today && sumMatch) {
+            document.getElementById('today-event').textContent = sumMatch[1].trim();
+            // try to surface source from description or leave blank
+            document.getElementById('today-source').textContent = '';
+            return;
+          }
+        }
+
+        document.getElementById('today-event').textContent = 'No event found for today yet.';
+      } catch {
+        document.getElementById('today-event').textContent = 'Subscribe to see daily events.';
+      }
+    }
+
+    loadTodayEvent();
+  </script>
+</body>
+</html>
