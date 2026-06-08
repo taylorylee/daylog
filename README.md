@@ -1,8 +1,8 @@
 # Daylog: Every Day Is Something
 
-One curated observance for every day of the year — merged from NatDayCal and UN International Days. From Pretend to Be a Time Traveler Day to National If Pets Had Thumbs Day (March 3) the calendar got it all.
+One curated observance for every day of the year, merged from NatDayCal and UN International Days. From Pretend to Be a Time Traveler Day to National If Pets Had Thumbs Day (March 3) the calendar got it all.
 
-Inspired by today's day... world's ocean day.
+Inspired by today's World Ocean Day on June 8th.
 
 ## Setup
 
